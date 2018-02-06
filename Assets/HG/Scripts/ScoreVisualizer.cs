@@ -23,7 +23,6 @@ public class ScoreVisualizer : MonoBehaviour
 	{
 		rect = GetComponent<RectTransform>();
 
-
 		t1Rect = transform.Find("Team1Bar").GetComponent<RectTransform>();
 		t2Rect = transform.Find("Team2Bar").GetComponent<RectTransform>();
 
@@ -42,28 +41,29 @@ public class ScoreVisualizer : MonoBehaviour
 	{
 		int max = FieldManager.Instance.MaxPointsForWin;
 
-		float interval = rect.rect.height / max;
+		// Hard-coded for now.
+		float interval = (rect.rect.width / 2f - 100f) / max;
 
 		if (s1 != prevS1)
 		{
-			prevS1 = s1;
+			prevS1 = s1 > max ? max : s1;
 
 			LeanTween.cancel(t1Tween);
 
-			t1Tween = LeanTween.value(t1Rect.sizeDelta.y, s1 * interval, 1f).setOnUpdate((float val) =>
+			t1Tween = LeanTween.value(t1Rect.sizeDelta.x, s1 * interval, 1f).setOnUpdate((float val) =>
 			{
-				t1Rect.sizeDelta = new Vector2(t1Rect.sizeDelta.x, val);
+				t1Rect.sizeDelta = new Vector2(val, t1Rect.sizeDelta.y);
 			}).setEase(LeanTweenType.easeInOutSine).uniqueId;
 		}
 		if (s2 != prevS2)
 		{
-			prevS2 = s2;
+			prevS2 = s2 > max ? max : s2;
 
 			LeanTween.cancel(t2Tween);
 
-			t2Tween = LeanTween.value(t2Rect.sizeDelta.y, s2 * interval, 1f).setOnUpdate((float val) =>
+			t2Tween = LeanTween.value(t2Rect.sizeDelta.x, s2 * interval, 1f).setOnUpdate((float val) =>
 			{
-				t2Rect.sizeDelta = new Vector2(t2Rect.sizeDelta.x, val);
+				t2Rect.sizeDelta = new Vector2(val, t2Rect.sizeDelta.y);
 			}).setEase(LeanTweenType.easeInOutSine).uniqueId;
 		}
 	}

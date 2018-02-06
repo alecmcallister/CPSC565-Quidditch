@@ -45,6 +45,7 @@ public class FieldManager : MonoBehaviour
 	{
 		Team1.SetPause(value);
 		Team2.SetPause(value);
+		Snitch.SetPaused(value);
 	}
 
 	public void TeamScored()

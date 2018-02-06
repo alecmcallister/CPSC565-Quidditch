@@ -17,10 +17,13 @@ public class Snitch : MonoBehaviour
 	public bool playing { get; private set; }
 	Vector3 prevVelocity;
 
+	Vector3 startLocation;
+
 	void Awake()
 	{
 		rigidbody = GetComponent<Rigidbody>();
 		collider = GetComponent<SphereCollider>();
+		startLocation = transform.position;
 	}
 
 	void Update()
@@ -54,6 +57,9 @@ public class Snitch : MonoBehaviour
 	public void SetPlaying(bool value)
 	{
 		playing = value;
+
+		if (playing)
+			transform.position = startLocation;
 	}
 
 	public void SetPaused(bool value)
