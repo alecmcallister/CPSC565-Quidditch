@@ -50,9 +50,9 @@ public class Snitch : MonoBehaviour
 		//	Debug.DrawLine(transform.position, transform.position + away, Color.cyan, 5f);
 		//}
 
-		Collider[] result = Physics.OverlapSphere(transform.position, SightDistance);
+		Vector3 closest = Vector3.one * 1000f;
 
-		Vector3 closest = Vector3.one * float.MaxValue;
+		Collider[] result = Physics.OverlapSphere(transform.position, SightDistance);
 
 		foreach (Collider other in result)
 		{
@@ -61,15 +61,21 @@ public class Snitch : MonoBehaviour
 
 			Vector3 away = transform.position - other.ClosestPoint(transform.position);
 
+			if (away == Vector3.zero)
+				continue;
+
 			if (away.magnitude < closest.magnitude)
 				closest = away;
 		}
 
-		Debug.Log(closest);
 
 		if (result.Length > 0)
-			rigidbody.AddForce(closest * Speed, ForceMode.Acceleration);
+		{
+			transform.forward = Vector3.Lerp(transform.forward, closest.normalized, Time.deltaTime * 10f);
+			rigidbody.AddForce(closest.normalized * Speed, ForceMode.Acceleration);
+		}
 
+		
 		//RaycastHit hitInfo;
 		//if (Physics.SphereCast(transform.position, SightDistance, transform.forward, out hitInfo))
 		//{

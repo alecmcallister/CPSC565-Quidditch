@@ -88,6 +88,7 @@ public class Player : MonoBehaviour
 
 		if (!atMaxVelocity || dot < 0.5f)
 		{
+			transform.forward = Vector3.Lerp(transform.forward, toTarget, Time.deltaTime * 10f);
 			rigidbody.AddForce(toTarget * Stats.MaxAcceleration, ForceMode.Acceleration);
 		}
 	}

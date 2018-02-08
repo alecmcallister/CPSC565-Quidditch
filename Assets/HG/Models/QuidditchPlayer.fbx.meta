@@ -1,15 +1,13 @@
 fileFormatVersion: 2
-guid: b7c42967820b3a948a7b6b6237ad60a9
-timeCreated: 1517270530
+guid: 0ab944878c2167146ac91f96b3254f68
+timeCreated: 1518117162
 licenseType: Pro
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
     100000: //RootNode
     400000: //RootNode
-    2100000: StadiumMat
-    2100002: GoalPost
-    2100004: FieldMat
+    2100000: No Name
     2300000: //RootNode
     3300000: //RootNode
     4300000: Plane

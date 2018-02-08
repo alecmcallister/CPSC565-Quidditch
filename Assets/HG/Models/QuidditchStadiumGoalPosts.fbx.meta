@@ -1,18 +1,16 @@
 fileFormatVersion: 2
-guid: b7c42967820b3a948a7b6b6237ad60a9
-timeCreated: 1517270530
+guid: 844786a64b1122748b9f3ca3082ff492
+timeCreated: 1518115347
 licenseType: Pro
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
     100000: //RootNode
     400000: //RootNode
-    2100000: StadiumMat
-    2100002: GoalPost
-    2100004: FieldMat
+    2100000: GoalPost
     2300000: //RootNode
     3300000: //RootNode
-    4300000: Plane
+    4300000: Plane.002
   externalObjects: {}
   materials:
     importMaterials: 1
