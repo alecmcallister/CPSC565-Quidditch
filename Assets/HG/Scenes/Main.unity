@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -172,6 +172,10 @@ Prefab:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 78e51875a09932b4180209c038f0fad2, type: 2}
+    - target: {fileID: 100000, guid: 844786a64b1122748b9f3ca3082ff492, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 844786a64b1122748b9f3ca3082ff492, type: 3}
   m_IsPrefabParent: 0
@@ -318,13 +322,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 114195698}
-  m_LocalRotation: {x: 0.19490503, y: 0.6797147, z: -0.19490503, w: 0.6797147}
-  m_LocalPosition: {x: -40, y: 25, z: 0}
+  m_LocalRotation: {x: 0.27059805, y: 0.6532815, z: -0.27059805, w: 0.6532815}
+  m_LocalPosition: {x: -30.6, y: 23.79, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 32, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 45, y: 90, z: 0}
 --- !u!114 &114195703
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -381,6 +385,24 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 131621776}
+--- !u!1 &213823171 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 100000, guid: 844786a64b1122748b9f3ca3082ff492, type: 3}
+  m_PrefabInternal: {fileID: 20294827}
+--- !u!64 &213823172
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 213823171}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300000, guid: 844786a64b1122748b9f3ca3082ff492, type: 3}
 --- !u!1 &265546928
 GameObject:
   m_ObjectHideFlags: 0
@@ -814,7 +836,7 @@ GameObject:
   - component: {fileID: 596694642}
   - component: {fileID: 596694645}
   - component: {fileID: 596694644}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Edge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -865,7 +887,7 @@ GameObject:
   - component: {fileID: 612770862}
   - component: {fileID: 612770864}
   - component: {fileID: 612770863}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Edge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -965,6 +987,10 @@ Prefab:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: b8c26c11d9af16140ad5aa02c77f4ded, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b8c26c11d9af16140ad5aa02c77f4ded, type: 3}
   m_IsPrefabParent: 0
@@ -1058,7 +1084,7 @@ GameObject:
   - component: {fileID: 735303699}
   - component: {fileID: 735303701}
   - component: {fileID: 735303700}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Edge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1109,7 +1135,7 @@ GameObject:
   - component: {fileID: 737562445}
   - component: {fileID: 737562448}
   - component: {fileID: 737562447}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Edge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1211,7 +1237,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: b7c42967820b3a948a7b6b6237ad60a9, type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: b7c42967820b3a948a7b6b6237ad60a9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -1275,9 +1301,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TeamName: gg no re
   TeamColor: {r: 1, g: 0.36764705, b: 0.36764705, a: 1}
-  PlayerCount: 3
-  MaxVelocity: 10
-  MaxAcceleration: 10
+  PlayerCount: 7
+  MaxVelocity: 5
+  MaxAcceleration: 5
   TacklingProb: 0.5
   StartingPoint: {fileID: 898769032}
 --- !u!1 &834811319
@@ -1290,7 +1316,7 @@ GameObject:
   - component: {fileID: 834811320}
   - component: {fileID: 834811322}
   - component: {fileID: 834811321}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Edge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1417,7 +1443,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 898769031}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 2.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 821361680}
@@ -1474,7 +1500,7 @@ GameObject:
   - component: {fileID: 902751313}
   - component: {fileID: 902751315}
   - component: {fileID: 902751314}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Edge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1557,7 +1583,21 @@ Prefab:
     - target: {fileID: 114494105013923814, guid: f0270c8b23ce7204a9fb38dfa29233f0,
         type: 2}
       propertyPath: Speed
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 114494105013923814, guid: f0270c8b23ce7204a9fb38dfa29233f0,
+        type: 2}
+      propertyPath: AfraidOfPlayers
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1935936371429170, guid: f0270c8b23ce7204a9fb38dfa29233f0, type: 2}
+      propertyPath: m_Layer
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114494105013923814, guid: f0270c8b23ce7204a9fb38dfa29233f0,
+        type: 2}
+      propertyPath: SightDistance
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f0270c8b23ce7204a9fb38dfa29233f0, type: 2}
@@ -2075,7 +2115,7 @@ GameObject:
   - component: {fileID: 1303584598}
   - component: {fileID: 1303584601}
   - component: {fileID: 1303584600}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Edge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2420,7 +2460,7 @@ GameObject:
   - component: {fileID: 1584305679}
   - component: {fileID: 1584305682}
   - component: {fileID: 1584305681}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Edge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2878,7 +2918,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1898581324}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 2.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 265546929}

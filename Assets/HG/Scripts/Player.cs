@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody), typeof(SphereCollider))]
+[RequireComponent(typeof(Rigidbody))]
 public class Player : MonoBehaviour
 {
 	public event Action<int, int> PlayerScoredEvent = new Action<int, int>((id, score) => { });
@@ -12,7 +12,6 @@ public class Player : MonoBehaviour
 	public PlayerStats Stats { get; private set; }
 
 	Rigidbody rigidbody;
-	SphereCollider collider;
 
 	public bool playing { get; private set; }
 	Vector3 prevVelocity;
@@ -20,7 +19,6 @@ public class Player : MonoBehaviour
 	void Awake()
 	{
 		rigidbody = GetComponent<Rigidbody>();
-		collider = GetComponent<SphereCollider>();
 	}
 
 	void Update()
@@ -39,7 +37,7 @@ public class Player : MonoBehaviour
 		Team = team;
 		Stats = stats;
 		GetComponent<MeshRenderer>().material.color = Team.TeamColor;
-		transform.localPosition = Vector3.zero;
+		transform.localPosition = UnityEngine.Random.insideUnitSphere * 2f;
 	}
 
 	public void SetPlaying(bool value)
@@ -81,15 +79,15 @@ public class Player : MonoBehaviour
 	void MoveToTarget(GameObject target)
 	{
 		// Change to add more interesting noise
-		Vector3 toTarget = (target.transform.position - transform.position).AddNoise(0.5f).normalized;
+		Vector3 toTarget = (target.transform.position - transform.position).AddNoise(2f).normalized;
 
 		bool atMaxVelocity = rigidbody.velocity.magnitude > Stats.MaxVelocity;
 		float dot = Vector3.Dot(rigidbody.velocity, toTarget);
 
 		if (!atMaxVelocity || dot < 0.5f)
 		{
-			transform.forward = Vector3.Lerp(transform.forward, toTarget, Time.deltaTime * 10f);
-			rigidbody.AddForce(toTarget * Stats.MaxAcceleration, ForceMode.Acceleration);
+			transform.forward = Vector3.Lerp(transform.forward, toTarget, Time.deltaTime * 5f);
+			rigidbody.AddForce(transform.forward * Stats.MaxAcceleration, ForceMode.Acceleration);
 		}
 	}
 }

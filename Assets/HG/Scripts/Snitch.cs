@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody), typeof(SphereCollider))]
@@ -10,6 +11,8 @@ public class Snitch : MonoBehaviour
 
 	[Range(1f, 20f)]
 	public float SightDistance = 10f;
+
+	public bool AfraidOfPlayers;
 
 	Rigidbody rigidbody;
 	SphereCollider collider;
@@ -41,24 +44,21 @@ public class Snitch : MonoBehaviour
 
 	void MoveAwayFromThings()
 	{
-		//RaycastHit hit;
-		//if (rigidbody.SweepTest(transform.forward, out hit, SightDistance))
-		//{
-		//	Vector3 away = (transform.position - hit.point).normalized;
-		//	transform.forward = away;
-		//	rigidbody.AddForce(away * Speed, ForceMode.Acceleration);
-		//	Debug.DrawLine(transform.position, transform.position + away, Color.cyan, 5f);
-		//}
-
 		Vector3 closest = Vector3.one * 1000f;
 
-		Collider[] result = Physics.OverlapSphere(transform.position, SightDistance);
+		Collider[] hits;
 
-		foreach (Collider other in result)
+		if (AfraidOfPlayers)
 		{
-			if (other == collider)
-				continue;
+			hits = Physics.OverlapSphere(transform.position, SightDistance, (1 << LayerMask.NameToLayer("Field")) | (1 << LayerMask.NameToLayer("Player")));
+		}
+		else
+		{
+			hits = Physics.OverlapSphere(transform.position, SightDistance, 1 << LayerMask.NameToLayer("Field"));
+		}
 
+		foreach (Collider other in hits)
+		{
 			Vector3 away = transform.position - other.ClosestPoint(transform.position);
 
 			if (away == Vector3.zero)
@@ -68,27 +68,27 @@ public class Snitch : MonoBehaviour
 				closest = away;
 		}
 
+		closest = (hits.Length > 0) ? closest.normalized : transform.forward;
 
-		if (result.Length > 0)
-		{
-			transform.forward = Vector3.Lerp(transform.forward, closest.normalized, Time.deltaTime * 10f);
-			rigidbody.AddForce(closest.normalized * Speed, ForceMode.Acceleration);
-		}
-
-		
-		//RaycastHit hitInfo;
-		//if (Physics.SphereCast(transform.position, SightDistance, transform.forward, out hitInfo))
-		//{
-		//	Vector3 away = hitInfo.normal;
-		//	transform.forward = away;
-		//	rigidbody.AddForce(away * Speed, ForceMode.Acceleration);
-		//	Debug.DrawLine(transform.position, transform.position + away, Color.cyan, 5f);
-		//}
+		transform.forward = Vector3.Lerp(transform.forward, closest.AddNoise(4f).normalized, Time.deltaTime * 10f);
+		rigidbody.AddForce(transform.forward * Speed, ForceMode.Acceleration);
 	}
 
 	void OnCollisionEnter(Collision other)
 	{
+		if (other.gameObject.GetComponent<Player>() != null)
+		{
+			SetRandomLocation();
+		}
+	}
 
+	public void SetRandomLocation()
+	{
+		rigidbody.velocity = Vector3.zero;
+		Vector3 newPos = startLocation + Random.insideUnitSphere * 20f;
+		newPos = new Vector3(newPos.x, Mathf.Clamp(newPos.y, startLocation.y - 1f, startLocation.y + 1f), newPos.z);
+		transform.position = newPos;
+		transform.forward = Vector3.up;
 	}
 
 	public void SetPlaying(bool value)
