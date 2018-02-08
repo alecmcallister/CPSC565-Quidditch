@@ -82,7 +82,10 @@ public class Team : MonoBehaviour
 
 	public void PlayerScoredEvent(int id, int points)
 	{
-		Score += points;
-		TeamScoredEvent();
+		if (Score < FieldManager.Instance.MaxPointsForWin)
+		{
+			Score += points;
+			TeamScoredEvent();
+		}
 	}
 }

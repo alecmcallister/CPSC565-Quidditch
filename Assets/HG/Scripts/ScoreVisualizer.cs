@@ -42,7 +42,7 @@ public class ScoreVisualizer : MonoBehaviour
 		int max = FieldManager.Instance.MaxPointsForWin;
 
 		// Hard-coded for now.
-		float interval = (rect.rect.width / 2f - 100f) / max;
+		float interval = (rect.rect.width / 2f - 50f) / max;
 
 		if (s1 != prevS1)
 		{

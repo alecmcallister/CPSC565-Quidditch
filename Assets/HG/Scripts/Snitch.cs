@@ -41,12 +41,43 @@ public class Snitch : MonoBehaviour
 
 	void MoveAwayFromThings()
 	{
-		RaycastHit hitInfo;
-		if (Physics.SphereCast(transform.position, SightDistance, transform.forward, out hitInfo))
+		//RaycastHit hit;
+		//if (rigidbody.SweepTest(transform.forward, out hit, SightDistance))
+		//{
+		//	Vector3 away = (transform.position - hit.point).normalized;
+		//	transform.forward = away;
+		//	rigidbody.AddForce(away * Speed, ForceMode.Acceleration);
+		//	Debug.DrawLine(transform.position, transform.position + away, Color.cyan, 5f);
+		//}
+
+		Collider[] result = Physics.OverlapSphere(transform.position, SightDistance);
+
+		Vector3 closest = Vector3.one * float.MaxValue;
+
+		foreach (Collider other in result)
 		{
-			Vector3 away = hitInfo.normal;
-			rigidbody.AddForce(away * Speed, ForceMode.Acceleration);
+			if (other == collider)
+				continue;
+
+			Vector3 away = transform.position - other.ClosestPoint(transform.position);
+
+			if (away.magnitude < closest.magnitude)
+				closest = away;
 		}
+
+		Debug.Log(closest);
+
+		if (result.Length > 0)
+			rigidbody.AddForce(closest * Speed, ForceMode.Acceleration);
+
+		//RaycastHit hitInfo;
+		//if (Physics.SphereCast(transform.position, SightDistance, transform.forward, out hitInfo))
+		//{
+		//	Vector3 away = hitInfo.normal;
+		//	transform.forward = away;
+		//	rigidbody.AddForce(away * Speed, ForceMode.Acceleration);
+		//	Debug.DrawLine(transform.position, transform.position + away, Color.cyan, 5f);
+		//}
 	}
 
 	void OnCollisionEnter(Collision other)
