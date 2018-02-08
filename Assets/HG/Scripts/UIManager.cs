@@ -65,6 +65,8 @@ public class UIManager : MonoBehaviour
 	{
 		FieldManager.Instance.StartGame();
 		UpdateScoreText();
+		paused = false;
+		pauseText.text = "Pause";
 	}
 
 	public void StopPressed()

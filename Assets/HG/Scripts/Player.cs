@@ -14,6 +14,8 @@ public class Player : MonoBehaviour
 	Rigidbody rigidbody;
 
 	public bool playing { get; private set; }
+
+	public bool paused { get; private set; }
 	Vector3 prevVelocity;
 
 	void Awake()
@@ -23,12 +25,9 @@ public class Player : MonoBehaviour
 
 	void Update()
 	{
-		if (playing)
-			MoveToTarget(FieldManager.Instance.Snitch.gameObject);
-		else
+		if (playing && !paused)
 		{
-			rigidbody.velocity = Vector3.zero;
-			rigidbody.Sleep();
+			MoveToTarget(FieldManager.Instance.Snitch.gameObject);
 		}
 	}
 
@@ -37,7 +36,7 @@ public class Player : MonoBehaviour
 		Team = team;
 		Stats = stats;
 		GetComponent<MeshRenderer>().material.color = Team.TeamColor;
-		transform.localPosition = UnityEngine.Random.insideUnitSphere * 2f;
+		transform.localPosition = UnityEngine.Random.insideUnitSphere * 3f;
 	}
 
 	public void SetPlaying(bool value)
@@ -47,25 +46,52 @@ public class Player : MonoBehaviour
 
 	public void SetPaused(bool value)
 	{
-		if (value)
+		paused = value;
+
+		if (paused)
 		{
-			//Pause
-			playing = false;
 			prevVelocity = rigidbody.velocity;
+			rigidbody.isKinematic = true;
 		}
 		else
 		{
-			// Resume
-			playing = true;
+			rigidbody.isKinematic = false;
 			rigidbody.velocity = prevVelocity;
 		}
 	}
 
 	void OnCollisionEnter(Collision other)
 	{
-		foreach (ContactPoint point in other.contacts)
+		if (other.gameObject.name == "Floor")
 		{
-			Snitch s = point.otherCollider.gameObject.GetComponent<Snitch>();
+			rigidbody.velocity = Vector3.zero;
+			transform.localPosition = UnityEngine.Random.insideUnitSphere * 3f;
+			playing = true;
+			rigidbody.useGravity = false;
+			return;
+		}
+
+		if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
+		{
+			Player otherPlayer = other.gameObject.GetComponent<Player>();
+
+			if (otherPlayer.Team != Team)
+			{
+				//rigidbody.AddForce(other.relativeVelocity, ForceMode.Impulse);
+
+				if (UnityEngine.Random.Range(0f, 1f) < Stats.TacklingProb)
+				{
+					otherPlayer.GotTackled();
+				}
+			}
+		}
+
+		if (!playing)
+			return;
+
+		if (other.gameObject.layer == LayerMask.NameToLayer("Snitch"))
+		{
+			Snitch s = other.gameObject.GetComponent<Snitch>();
 
 			if (s)
 			{
@@ -78,7 +104,6 @@ public class Player : MonoBehaviour
 
 	void MoveToTarget(GameObject target)
 	{
-		// Change to add more interesting noise
 		Vector3 toTarget = (target.transform.position - transform.position).AddNoise(2f).normalized;
 
 		bool atMaxVelocity = rigidbody.velocity.magnitude > Stats.MaxVelocity;
@@ -89,6 +114,12 @@ public class Player : MonoBehaviour
 			transform.forward = Vector3.Lerp(transform.forward, toTarget, Time.deltaTime * 5f);
 			rigidbody.AddForce(transform.forward * Stats.MaxAcceleration, ForceMode.Acceleration);
 		}
+	}
+
+	public void GotTackled()
+	{
+		playing = false;
+		rigidbody.useGravity = true;
 	}
 }
 

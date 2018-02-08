@@ -22,5 +22,16 @@ public class FollowThatObject : MonoBehaviour
 	void Update()
 	{
 		transform.position = Vector3.Lerp(transform.position, Follow.position + offset, Time.deltaTime * LerpSpeed);
+
+		if (Input.GetKey(KeyCode.D))
+		{
+			transform.RotateAround(Follow.position, Vector3.up, 3f);
+			offset = transform.position - Follow.position;
+		}
+		if (Input.GetKey(KeyCode.A))
+		{
+			transform.RotateAround(Follow.position, Vector3.up, -3f);
+			offset = transform.position - Follow.position;
+		}
 	}
 }

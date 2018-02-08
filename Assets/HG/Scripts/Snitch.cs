@@ -29,7 +29,7 @@ public class Snitch : MonoBehaviour
 		startLocation = transform.position;
 	}
 
-	void Update()
+	void FixedUpdate()
 	{
 		if (playing)
 		{
@@ -44,34 +44,37 @@ public class Snitch : MonoBehaviour
 
 	void MoveAwayFromThings()
 	{
-		Vector3 closest = Vector3.one * 1000f;
-
 		Collider[] hits;
 
 		if (AfraidOfPlayers)
-		{
 			hits = Physics.OverlapSphere(transform.position, SightDistance, (1 << LayerMask.NameToLayer("Field")) | (1 << LayerMask.NameToLayer("Player")));
-		}
+
 		else
-		{
 			hits = Physics.OverlapSphere(transform.position, SightDistance, 1 << LayerMask.NameToLayer("Field"));
-		}
 
-		foreach (Collider other in hits)
+		Vector3 away = SmallestAwayVector(hits);
+
+		transform.forward = Vector3.Lerp(transform.forward, away.AddNoise(1f).normalized, Time.deltaTime * 10f);
+		rigidbody.AddForce(transform.forward * ((hits.Length > 0) ? Speed : Speed * 0.5f), ForceMode.Acceleration);
+	}
+
+	Vector3 SmallestAwayVector(Collider[] others)
+	{
+		float dist = float.MaxValue;
+		Vector3 closest = Vector3.zero;
+
+		foreach (Collider other in others)
 		{
-			Vector3 away = transform.position - other.ClosestPoint(transform.position);
-
-			if (away == Vector3.zero)
-				continue;
-
-			if (away.magnitude < closest.magnitude)
-				closest = away;
+			Vector3 point = other.ClosestPointOnBounds(transform.position);
+			float otherdist = Vector3.Distance(transform.position, point);
+			if (otherdist > 0f && otherdist < dist)
+			{
+				dist = otherdist;
+				closest = transform.position - point;
+			}
 		}
 
-		closest = (hits.Length > 0) ? closest.normalized : transform.forward;
-
-		transform.forward = Vector3.Lerp(transform.forward, closest.AddNoise(4f).normalized, Time.deltaTime * 10f);
-		rigidbody.AddForce(transform.forward * Speed, ForceMode.Acceleration);
+		return closest;
 	}
 
 	void OnCollisionEnter(Collision other)
@@ -84,11 +87,11 @@ public class Snitch : MonoBehaviour
 
 	public void SetRandomLocation()
 	{
-		rigidbody.velocity = Vector3.zero;
 		Vector3 newPos = startLocation + Random.insideUnitSphere * 20f;
 		newPos = new Vector3(newPos.x, Mathf.Clamp(newPos.y, startLocation.y - 1f, startLocation.y + 1f), newPos.z);
 		transform.position = newPos;
 		transform.forward = Vector3.up;
+		rigidbody.velocity = Vector3.zero;
 	}
 
 	public void SetPlaying(bool value)
@@ -96,7 +99,10 @@ public class Snitch : MonoBehaviour
 		playing = value;
 
 		if (playing)
+		{
+			transform.forward = Vector3.up;
 			transform.position = startLocation;
+		}
 	}
 
 	public void SetPaused(bool value)
